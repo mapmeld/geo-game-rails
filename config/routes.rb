@@ -1,6 +1,11 @@
 MicroBoundaries::Application.routes.draw do
   root :to => "home#index"
 
+  match "/fetch_from_instagram" => "home#fetch_from_instagram"
+
+  match "/leaderboard" => "home#leaderboard"
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

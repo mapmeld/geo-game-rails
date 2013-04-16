@@ -9,21 +9,17 @@
       11
     );
 
-    var photo_popup = new L.Popup({ minWidth: 250 });
-
     var openMarker = function(marker, photo){
-      photo_popup.setLatLng(marker.getLatLng())
-        .setContent("<img src='" + photo.images.low_resolution.url + "' width='204' height='204'/><br/>" + (new Date(1000*photo.created_time)).toDateString() )
-        .openOn(LeafletLib.map);
       var popup_timeout;
       var popup_exited = false;
+
       marker.on('mouseout', function(e){
         popup_exited = true;
         window.clearTimeout(popup_timeout);
         popup_timeout = window.setTimeout(function(){
           if(popup_exited){
             popup_exited = false;
-            LeafletLib.map.removeLayer(photo_popup);
+            LeafletLib.map.closePopup();
           }
         }, 500);
       });
@@ -36,31 +32,30 @@
         popup_timeout = window.setTimeout(function(){
           if(popup_exited){
             popup_exited = false;
-            LeafletLib.map.removeLayer(photo_popup);
+            LeafletLib.map.closePopup();
           }
         }, 500);
       });
     };
 
     var enableMarker = function(marker, photo){
+      marker.bindPopup("<img src='" + photo.image_url + "' width='204' height='204'/><br/>" + (new Date(1000*photo.created_time)).toDateString() )
       marker.on('click', function(e){
         openMarker(marker, photo);
       });
       marker.on('mouseover', function(e){
-        openMarker(marker, photo);
+        if($(".leaflet-popup").length === 0){
+          marker.fire('click');
+        }
       });
     };
 
     var photos = #{@mapped_photos};
     for(var photo in photos){
-      if((typeof photos[photo].location != "undefined") && (photos[photo].location)){
-        if((typeof photos[photo].location.latitude != "undefined") && (photos[photo].location.latitude)){
-          // lat/lng location exists. map it
-          var m = new L.Marker( new L.LatLng( photos[photo].location.latitude * 1.0, photos[photo].location.longitude * 1.0 ) );
-          enableMarker(m, photos[photo]);
-          LeafletLib.addMarker( m );
-        }
-      }
+      // lat/lng location exists. map it
+      var m = new L.Marker( new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ) );
+      enableMarker(m, photos[photo]);
+      LeafletLib.addMarker( m );
     }
 
     LeafletLib.fitFeatures();
@@ -80,21 +75,20 @@
   .span4
     %h4
       %span.latin Geobacter Sulfurrenducens
+      %br
       %small #mbgeo
-    %p Produces electricity and contains radioactive uranium!
-    %a.btn{ :href => "#" } Learn More
 
   .span4
     %h4
       %span.latin Rhizobium leguminosarum
+      %br
       %small #mbrhizo
-    %a.btn{ :href => "#" } Learn More
 
   .span4
     %h4
       %span.latin Bacillus subtilis
+      %br
       %small #mbbacs
-    %a.btn{ :href => "#" } Learn More
 
 %br
 
@@ -102,14 +96,14 @@
   .span4
     %h4
       %span.latin Mycobacterium vaccae
+      %br
       %small #mbmyco
-    %a.btn{ :href => "#" } Learn More
 
   .span4
     %h4
       %span.latin Shewanella oneidensis
+      %br
       %small #mbshewa
-    %a.btn{ :href => "#" } Learn More
 
 %br
 %br

@@ -2,9 +2,18 @@ class HomeController < ApplicationController
   include ApplicationHelper
 
   def index
+    @mapped_photos = InstagramPhoto.all()
+    @mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
+  end
+
+  def leaderboard
+    @sorted_users = InstagramUser.order("score DESC").limit(5)
+  end
+
+  def fetch_from_instagram
     @instagram_tags = [ "mbgeo", "mbrhizo", "mbbacs", "mbmyco", "mbshewa" ]
 
-    @mapped_photos = [ ]
+    #@mapped_photos = [ ]
 
     @instagram_tags.each do |tag|
       photos = nil # Rails.cache.read(tag)
@@ -17,10 +26,10 @@ class HomeController < ApplicationController
           break if store_instagram_photo(photo)
         end
       end
-      @mapped_photos.concat( photos )
+      #@mapped_photos.concat( photos )
     end
 
-    @mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
+    #@mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
   end
 
   def store_instagram_photo(photo)
@@ -40,6 +49,10 @@ class HomeController < ApplicationController
           )
           known_user.save!
           #puts known_user
+        else
+          #increment user score
+          known_user.score = known_user.score + 1
+          known_user.save!
         end
         # now that user exists in DB, create the photo
         gen_photo = InstagramPhoto.new(

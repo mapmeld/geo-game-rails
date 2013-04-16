@@ -1,0 +1,12 @@
+
+.row-fluid
+  .hero-unit
+    %h3 Scoring by number of photos
+
+.row-fluid
+  - @sorted_users.each do |user|
+    .span4
+      %h3
+        %span #{user.username}
+        %small #{user.score} photos
+      %img{ :src => user.profile_picture }
