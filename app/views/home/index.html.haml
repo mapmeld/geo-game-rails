@@ -1,0 +1,70 @@
+- content_for :javascripts do
+
+  :javascript
+
+    LeafletLib.initialize(
+      $("#map")[0],
+      { },
+      [ 41.8781136, -87.66677956445312 ],
+      11
+    );
+
+    var photos = #{@mapped_photos};
+    for(var photo in photos){
+      if((typeof photos[photo].location != "undefined") && (photos[photo].location)){
+        if((typeof photos[photo].location.latitude != "undefined") && (photos[photo].location.latitude)){
+          // lat/lng location exists. map it
+          var m = new L.Marker( new L.LatLng( photos[photo].location.latitude * 1.0, photos[photo].location.longitude * 1.0 ) );
+          LeafletLib.addMarker( m );
+        }
+      }
+    }
+
+.row-fluid
+  .span12
+    %h1
+      %span Micro-Boundaries
+      %small Beneficial Bacteria Game
+
+    #map{ :style => "height:400px;" }
+
+%br
+%br
+
+.row-fluid
+  .span4
+    %h4
+      %span.latin Geobacter Sulfurrenducens
+      %small #mbgeo
+    %p Produces electricity and contains radioactive uranium!
+    %a.btn{ :href => "#" } Learn More
+
+  .span4
+    %h4
+      %span.latin Rhizobium leguminosarum
+      %small #mbrhizo
+    %a.btn{ :href => "#" } Learn More
+
+  .span4
+    %h4
+      %span.latin Bacillus subtilis
+      %small #mbbacs
+    %a.btn{ :href => "#" } Learn More
+
+%br
+
+.row-fluid
+  .span4
+    %h4
+      %span.latin Mycobacterium vaccae
+      %small #mbmyco
+    %a.btn{ :href => "#" } Learn More
+
+  .span4
+    %h4
+      %span.latin Shewanella oneidensis
+      %small #mbshewa
+    %a.btn{ :href => "#" } Learn More
+
+%br
+%br
