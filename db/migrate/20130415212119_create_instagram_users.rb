@@ -5,7 +5,7 @@ class CreateInstagramUsers < ActiveRecord::Migration
       # Returned from Instagram API
       t.string :username
       t.string :profile_picture
-      t.string :instagram_user_id
+      t.string :instagram_id
       t.string :full_name
 
       t.integer :score

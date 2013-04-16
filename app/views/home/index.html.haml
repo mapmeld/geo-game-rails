@@ -9,16 +9,61 @@
       11
     );
 
+    var photo_popup = new L.Popup({ minWidth: 250 });
+
+    var openMarker = function(marker, photo){
+      photo_popup.setLatLng(marker.getLatLng())
+        .setContent("<img src='" + photo.images.low_resolution.url + "' width='204' height='204'/><br/>" + (new Date(1000*photo.created_time)).toDateString() )
+        .openOn(LeafletLib.map);
+      var popup_timeout;
+      var popup_exited = false;
+      marker.on('mouseout', function(e){
+        popup_exited = true;
+        window.clearTimeout(popup_timeout);
+        popup_timeout = window.setTimeout(function(){
+          if(popup_exited){
+            popup_exited = false;
+            LeafletLib.map.removeLayer(photo_popup);
+          }
+        }, 500);
+      });
+      $(".leaflet-popup").on("mouseover", function(e){
+        popup_exited = false;
+      });
+      $(".leaflet-popup").on("mouseout", function(e){
+        popup_exited = true;
+        window.clearTimeout(popup_timeout);
+        popup_timeout = window.setTimeout(function(){
+          if(popup_exited){
+            popup_exited = false;
+            LeafletLib.map.removeLayer(photo_popup);
+          }
+        }, 500);
+      });
+    };
+
+    var enableMarker = function(marker, photo){
+      marker.on('click', function(e){
+        openMarker(marker, photo);
+      });
+      marker.on('mouseover', function(e){
+        openMarker(marker, photo);
+      });
+    };
+
     var photos = #{@mapped_photos};
     for(var photo in photos){
       if((typeof photos[photo].location != "undefined") && (photos[photo].location)){
         if((typeof photos[photo].location.latitude != "undefined") && (photos[photo].location.latitude)){
           // lat/lng location exists. map it
           var m = new L.Marker( new L.LatLng( photos[photo].location.latitude * 1.0, photos[photo].location.longitude * 1.0 ) );
+          enableMarker(m, photos[photo]);
           LeafletLib.addMarker( m );
         }
       }
     }
+
+    LeafletLib.fitFeatures();
 
 .row-fluid
   .span12
