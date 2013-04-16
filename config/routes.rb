@@ -3,6 +3,8 @@ MicroBoundaries::Application.routes.draw do
 
   match "/fetch_from_instagram" => "home#fetch_from_instagram"
 
+  match "/microbe/:id" => "microbe#show"
+
   match "/leaderboard" => "home#leaderboard"
 
 

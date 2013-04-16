@@ -2,7 +2,8 @@ class HomeController < ApplicationController
   include ApplicationHelper
 
   def index
-    @mapped_photos = InstagramPhoto.all()
+    @microbes = Microbe.all
+    @mapped_photos = InstagramPhoto.all
     @mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
   end
 
@@ -11,19 +12,21 @@ class HomeController < ApplicationController
   end
 
   def fetch_from_instagram
-    @instagram_tags = [ "mbgeo", "mbrhizo", "mbbacs", "mbmyco", "mbshewa" ]
+    #@instagram_tags = [ "mbgeo", "mbrhizo", "mbbacs", "mbmyco", "mbshewa" ]
+
+    @microbes = Microbe.all
 
     #@mapped_photos = [ ]
 
-    @instagram_tags.each do |tag|
-      photos = nil # Rails.cache.read(tag)
+    @microbes.each do |microbe|
+      photos = nil # Rails.cache.read(microbe.tag)
       if photos == nil
-        photos = Instagram.tag_recent_media(tag)
-        #Rails.cache.write(tag, photos, :timeToLive => 300.seconds)
+        photos = Instagram.tag_recent_media(microbe.tag)
+        #Rails.cache.write(microbe.tag, photos, :timeToLive => 300.seconds)
 
         # store photos until you reach an already-known photo
         photos.each do |photo|
-          break if store_instagram_photo(photo)
+          break if store_instagram_photo(photo, microbe)
         end
       end
       #@mapped_photos.concat( photos )
@@ -32,7 +35,7 @@ class HomeController < ApplicationController
     #@mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
   end
 
-  def store_instagram_photo(photo)
+  def store_instagram_photo(photo, microbe)
     unless photo.location.nil?
       known_photo = InstagramPhoto.where(:instagram_photo_id => photo.id).first
       if known_photo.nil?
@@ -62,7 +65,8 @@ class HomeController < ApplicationController
           :longitude => photo.location.longitude,
           :image_url => photo.images.low_resolution.url,
           :caption => photo.caption.text,
-          :instagram_user_id => known_user.id
+          :instagram_user_id => known_user.id,
+          :microbe_id => microbe.id
         )
         gen_photo.save!
         #puts gen_photo

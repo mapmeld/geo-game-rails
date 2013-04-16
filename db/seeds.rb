@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+microbes = Microbe.create([
+  { name: 'Geobacter sulfurrenducens', tag: 'mbgeo' },
+  { name: 'Rhizobium leguminosarum', tag: 'mbrhizo' },
+  { name: 'Mycobacterium vaccae', tag: 'mbmyco' },
+  { name: 'Shewanella oneidensis', tag: 'mbshewa' },
+  { name: 'Bacillus subtilis', tag: 'mbbacs' }
+])

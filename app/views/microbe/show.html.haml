@@ -39,7 +39,7 @@
     };
 
     var enableMarker = function(marker, photo){
-      marker.bindPopup("<img src='" + photo.image_url + "' width='204' height='204' style='height:204px;width:204px;'/><br/>" + (new Date(1000*photo.created_time)).toDateString() )
+      marker.bindPopup("<img src='" + photo.image_url + "' width='204' height='204' style='width:204px;height:204px;'/><br/>" + (new Date(1000*photo.created_time)).toDateString() )
       marker.on('click', function(e){
         openMarker(marker, photo);
       });
@@ -63,30 +63,10 @@
 .row-fluid
   .span12
     %h1
-      %span Micro-Boundaries
-      %small Beneficial Bacteria Game
+      %span #{@microbe.name}
+      %small ##{@microbe.tag}
 
     #map{ :style => "height:400px;" }
-
-%br
-%br
-
-.row-fluid
-  - @microbes[0..2].each do |microbe|
-    .span4
-      %h4
-        %a.latin{ :href => "/microbe/#{microbe.id}" } #{microbe.name}
-        %br
-        %small ##{microbe.tag}
-
-.row-fluid
-  - @microbes[3..5].each do |microbe|
-    .span4
-      %h4
-        %a.latin{ :href => "/microbe/#{microbe.id}" } #{microbe.name}
-        %br
-        %small ##{microbe.tag}
-
 
 %br
 %br
