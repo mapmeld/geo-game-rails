@@ -1,6 +1,17 @@
 class HomeController < ApplicationController
   include ApplicationHelper
 
+  def trigger_instagram( microbes=nil )
+    if microbes.nil?
+      microbes = Microbe.all
+    end
+
+    microbes.each do |microbe|
+      fetch_from_instagram(microbe)
+    end
+    ApplicationHelper.finished_instagram_load
+  end
+
   def index
     #@microbes = Rails.cache.read("AllMicrobes")
     #if @microbes.nil?
@@ -10,40 +21,48 @@ class HomeController < ApplicationController
 
     @microbes = Microbe.all
 
+    if ApplicationHelper.next_load_instagram < Time.now
+      trigger_instagram(@microbes)
+    end
+
+
     @mapped_photos = InstagramPhoto.all
     @mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
 
-    if ApplicationHelper.next_load_instagram < Time.now
-      fetch_from_instagram
-    end
-
   end
 
-  def fetch_from_instagram
-    #@instagram_tags = [ "mbgeo", "mbrhizo", "mbbacs", "mbmyco", "mbshewa" ]
+  def fetch_from_instagram( microbe, earliest_tag_id=nil, page=0 )
 
-    @microbes = Microbe.all
+    earliest_tag_id = nil
 
-    #@mapped_photos = [ ]
-
-    @microbes.each do |microbe|
-      photos = nil # Rails.cache.read(microbe.tag)
-      if photos.nil?
-        photos = Instagram.tag_recent_media(microbe.tag)
-        #Rails.cache.write(microbe.tag, photos, :timeToLive => 300.seconds)
-
-        # store photos until you reach an already-known photo
-        photos.each do |photo|
-          break if store_instagram_photo(photo, microbe)
-        end
-      end
-      #@mapped_photos.concat( photos )
+    if page.nil?
+      photos = Instagram.tag_recent_media(microbe.tag)
+    else
+      photos = Instagram.tag_recent_media(microbe.tag, { :max_tag_id => page })
     end
 
-    #@mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
+    # store photos until you reach an already-known photo
+    finished = false
+    photos.each do |photo|
+      finished = store_instagram_photo(photo, microbe)
+      break if finished
 
-    ApplicationHelper.finished_instagram_load
+      if earliest_tag_id.nil?
+        earliest_tag_id = photo.id
+      else
+        earliest_tag_id = [ earliest_tag_id, photo.id ].min
+      end
+    end
 
+    # if these 20 images did not match any in the DB, go to the next page
+    # unless we are on the tenth page; that's time to stop
+    puts finished
+    puts page
+    puts photos.length
+
+    if finished == false and page < 10 and photos.length >= 15
+      fetch_from_instagram( microbe, earliest_tag_id, page + 1 )
+    end
   end
 
   def store_instagram_photo(photo, microbe)
@@ -69,6 +88,7 @@ class HomeController < ApplicationController
           known_user.save!
         end
         # now that user exists in DB, create the photo
+        photo.caption = photo.caption or { :text => "" }
         gen_photo = InstagramPhoto.new(
           :instagram_photo_id => photo.id,
           :created_time => photo.created_time,

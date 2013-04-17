@@ -1,7 +1,7 @@
 MicroBoundaries::Application.routes.draw do
   root :to => "home#index"
 
-  match "/fetch_from_instagram" => "home#fetch_from_instagram"
+  match "/fetch_from_instagram" => "home#trigger_instagram"
 
   match "/microbe/:id" => "microbe#show"
 
