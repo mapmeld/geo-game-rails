@@ -7,10 +7,16 @@ class HomeController < ApplicationController
     #  @microbes = Microbe.all
     #  Rails.cache.write("AllMicrobes", @microbes)
     #end
+
     @microbes = Microbe.all
 
     @mapped_photos = InstagramPhoto.all
     @mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
+
+    if ApplicationHelper.next_load_instagram < Time.now
+      fetch_from_instagram
+    end
+
   end
 
   def fetch_from_instagram
@@ -35,6 +41,9 @@ class HomeController < ApplicationController
     end
 
     #@mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
+
+    ApplicationHelper.finished_instagram_load
+
   end
 
   def store_instagram_photo(photo, microbe)
