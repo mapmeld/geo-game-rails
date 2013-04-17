@@ -2,6 +2,13 @@
 
   :javascript
 
+    $(window).resize(function () {
+      var h = $(window).height(),
+        offsetTop = 90; // Calculate the top offset
+
+      $('#map').css('height', (h - offsetTop));
+    }).resize();
+
     LeafletLib.initialize(
       $("#map")[0],
       { },
@@ -61,32 +68,11 @@
     LeafletLib.fitFeatures();
 
 .row-fluid
-  .span12
-    %h1
-      %span Micro-Boundaries
-      %small Beneficial Bacteria Game
-
-    #map{ :style => "height:400px;" }
-
-%br
-%br
-
-.row-fluid
-  - @microbes[0..2].each do |microbe|
-    .span4
+  .span4
+    - @microbes.each do |microbe|
       %h4
         %a.latin{ :href => "/microbe/#{microbe.id}" } #{microbe.name}
         %br
         %small ##{microbe.tag}
-
-.row-fluid
-  - @microbes[3..5].each do |microbe|
-    .span4
-      %h4
-        %a.latin{ :href => "/microbe/#{microbe.id}" } #{microbe.name}
-        %br
-        %small ##{microbe.tag}
-
-
-%br
-%br
+  .span8
+    #map

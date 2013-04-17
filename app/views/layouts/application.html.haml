@@ -28,29 +28,15 @@
             %span.icon-bar
             %span.icon-bar
           %a.brand(href="#") MicroBoundaries
-          /
-            .container.nav-collapse
-              %ul.nav
-                %li= link_to "Get Started", "/start"
-                %li= link_to "Scoring", "/scoring"
-                %li= link_to "Leaderboard", "/leaderboard"
-
-    .container-fluid
-
-      .row-fluid
-        .span3
-          .well.sidebar-nav
-            %ul.nav.nav-list
-              %li.nav-header Play the Game
+          .container.nav-collapse
+            %ul.nav
               %li= link_to "Get Started", "/start"
               %li= link_to "Scoring", "/scoring"
               %li= link_to "Leaderboard", "/leaderboard"
-        .span9
-          = bootstrap_flash
-          = yield
-    
-      %footer
-        %p --
+
+    .container-fluid
+      = bootstrap_flash
+      = yield
     /
       Javascripts
       \==================================================

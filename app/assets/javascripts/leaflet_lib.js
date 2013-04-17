@@ -15,7 +15,7 @@ var LeafletLib = {
 
         LeafletLib.tiles = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
             key: '88c48b9eab824447beca8aca7bb6e167',
-            styleId: 91943
+            styleId: 92633
         }).addTo(LeafletLib.map);
 
         LeafletLib.map.attributionControl.setPrefix('');
