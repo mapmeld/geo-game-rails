@@ -53,7 +53,7 @@
     var photos = #{@mapped_photos};
     for(var photo in photos){
       // lat/lng location exists. map it
-      var m = new L.Marker( new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ) );
+      var m = new L.CircleMarker( new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ), {color: '#f50f43'} );
       enableMarker(m, photos[photo]);
       LeafletLib.addMarker( m );
     }
