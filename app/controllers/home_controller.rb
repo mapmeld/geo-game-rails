@@ -2,13 +2,15 @@ class HomeController < ApplicationController
   include ApplicationHelper
 
   def index
+    #@microbes = Rails.cache.read("AllMicrobes")
+    #if @microbes.nil?
+    #  @microbes = Microbe.all
+    #  Rails.cache.write("AllMicrobes", @microbes)
+    #end
     @microbes = Microbe.all
+
     @mapped_photos = InstagramPhoto.all
     @mapped_photos = ActiveSupport::JSON.encode(@mapped_photos)
-  end
-
-  def leaderboard
-    @sorted_users = InstagramUser.order("score DESC").limit(5)
   end
 
   def fetch_from_instagram
@@ -20,7 +22,7 @@ class HomeController < ApplicationController
 
     @microbes.each do |microbe|
       photos = nil # Rails.cache.read(microbe.tag)
-      if photos == nil
+      if photos.nil?
         photos = Instagram.tag_recent_media(microbe.tag)
         #Rails.cache.write(microbe.tag, photos, :timeToLive => 300.seconds)
 

@@ -7,7 +7,7 @@
   - @sorted_users.each do |user|
     .span4
       %h3
-        %span #{user.username}
+        %a{ :href => "/user/#{user.id}" } #{user.username}
         - if user.score == 1
           %small 1 photo
         - else

@@ -5,7 +5,9 @@ MicroBoundaries::Application.routes.draw do
 
   match "/microbe/:id" => "microbe#show"
 
-  match "/leaderboard" => "home#leaderboard"
+  match "/users" => "instagram_user#index"
+  match "/user/:id" => "instagram_user#show"
+  match "/leaderboard" => "instagram_user#index"
 
 
   # The priority is based upon order of creation:
