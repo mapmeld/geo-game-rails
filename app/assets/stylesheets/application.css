@@ -11,3 +11,11 @@
  *= require_self
  *= require bootstrap_and_overrides
  */
+
+small.mbgeo{ background-color: #ff7518 }
+small.mbrhizo{ background-color: #2f9618 }
+small.mbmyco{ background-color: #f50f43 }
+small.mbshewa{ background-color: #9954bb }
+small.mbbacs{ background-color: #ff44f9 }
+
+a.latin{ color: rgb(100, 152, 204) }

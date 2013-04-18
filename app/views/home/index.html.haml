@@ -60,7 +60,15 @@
     var photos = #{@mapped_photos};
     for(var photo in photos){
       // lat/lng location exists. map it
-      var m = new L.Marker( new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ) );
+      var m = new L.CircleMarker(
+        new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ),
+        {
+          color: $(".microbe"+photos[photo].microbe_id).css("background-color"),
+          weight: 3,
+          fillOpacity: 0.7,
+          opacity: 0.7
+        }
+      );
       enableMarker(m, photos[photo]);
       LeafletLib.addMarker( m );
     }
@@ -71,8 +79,8 @@
   .span4
     - @microbes.each do |microbe|
       %h4
-        %a{ :class => "latin #{microbe.tag}", :href => "/microbe/#{microbe.id}" } #{microbe.name}
+        %a.latin{ :href => "/microbe/#{microbe.id}" } #{microbe.name}
         %br
-        %small ##{microbe.tag}
+        %small{ :class => "badge #{microbe.tag} microbe#{microbe.id}" } ##{microbe.tag}
   .span8
     #map
