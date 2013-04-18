@@ -39,6 +39,10 @@ GEM
       multipart-post (~> 1.1)
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
+    geokit (1.6.5)
+      multi_json
+    geokit-rails (1.1.4)
+      geokit (>= 1.5.0)
     haml (4.0.2)
       tilt
     haml-rails (0.4)
@@ -135,6 +139,8 @@ PLATFORMS
 
 DEPENDENCIES
   dalli
+  geokit
+  geokit-rails
   haml-rails
   instagram
   jquery-rails

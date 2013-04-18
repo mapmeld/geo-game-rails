@@ -1,7 +1,7 @@
 
 .row-fluid
   .hero-unit
-    %h3 Scoring by number of photos
+    %h3 Scoring by photos' number and location
 
 .row-fluid
   - @sorted_users.each do |user|
@@ -9,7 +9,7 @@
       %h3
         %a{ :href => "/user/#{user.id}" } #{user.username}
         - if user.score == 1
-          %small 1 photo
+          %small 1 point
         - else
-          %small #{user.score} photos
+          %small #{user.score} points
       %img{ :src => user.profile_picture }

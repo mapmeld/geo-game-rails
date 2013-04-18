@@ -47,3 +47,6 @@ gem 'unicorn'
 # gem 'debugger'
 
 gem 'newrelic_rpm'
+
+gem 'geokit'
+gem 'geokit-rails'

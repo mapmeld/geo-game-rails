@@ -31,6 +31,27 @@ class HomeController < ApplicationController
 
   end
 
+  def score_of( latlng, microbe_type )
+    closest = InstagramPhoto.where( :microbe_id => microbe_type ).find_closest( :origin => latlng )
+    if closest.nil?
+      # first bacteria of this type: 10 points
+      10
+    else
+      neardist = closest.distance_to( latlng )
+      # nearest_photos = InstagramPhoto.where( :microbe_id => microbe_type ).find_within(2, :origin => latlng)
+      if neardist < 0.007
+        # too close - zero points
+        0
+      elsif neardist > 100
+        # too far - one point
+        1
+      else
+        # function
+        10 / ( 3 * neardist + 0.333 )
+      end
+    end
+  end
+
   def fetch_from_instagram( microbe, earliest_tag_id=nil, page=0 )
 
     earliest_tag_id = nil
@@ -56,9 +77,6 @@ class HomeController < ApplicationController
 
     # if these 20 images did not match any in the DB, go to the next page
     # unless we are on the tenth page; that's time to stop
-    puts finished
-    puts page
-    puts photos.length
 
     if finished == false and page < 10 and photos.length >= 15
       fetch_from_instagram( microbe, earliest_tag_id, page + 1 )
@@ -78,13 +96,15 @@ class HomeController < ApplicationController
             :username => photo.user.username,
             :profile_picture => photo.user.profile_picture,
             :full_name => photo.user.full_name,
-            :score => 1
+            :score => [ 10, score_of( [ photo.location.latitude, photo.location.longitude ], microbe.id ) ].max
           )
           known_user.save!
           #puts known_user
         else
           #increment user score
-          known_user.score = known_user.score + 1
+          near = score_of( [ photo.location.latitude, photo.location.longitude ], microbe.id )
+          puts near
+          known_user.score = known_user.score + near.ceil
           known_user.save!
         end
         # now that user exists in DB, create the photo
