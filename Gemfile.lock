@@ -69,6 +69,8 @@ GEM
     less-rails (2.3.2)
       actionpack (>= 3.1)
       less (~> 2.3.1)
+    less-rails-bootstrap (2.3.2)
+      less-rails (~> 2.3.1)
     libv8 (3.11.8.17)
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -145,6 +147,7 @@ DEPENDENCIES
   instagram
   jquery-rails
   less-rails
+  less-rails-bootstrap
   memcachier
   newrelic_rpm
   pg
