@@ -50,11 +50,12 @@
       marker.on('click', function(e){
         openMarker(marker, photo);
       });
-      /*marker.on('mouseover', function(e){
+      marker.on('mouseover', function(e){
         if($(".leaflet-popup").length == 0){
-          marker.fire('click');
+          e.latlng = marker.getLatLng();
+          marker.fireEvent('click', e);
         }
-      });*/
+      });
     };
 
     var photos = #{@mapped_photos};
