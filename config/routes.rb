@@ -5,6 +5,7 @@ MicroBoundaries::Application.routes.draw do
   get "/scoring" => "home#scoring"
 
   match "/fetch_from_instagram" => "home#trigger_instagram"
+  match "/recalculate_scores" => "home#recalculate_scores"
 
   match "/microbe/:id" => "microbe#show"
 

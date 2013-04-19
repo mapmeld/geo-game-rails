@@ -31,19 +31,51 @@ class HomeController < ApplicationController
 
   end
 
-  def score_of( latlng, microbe_type )
-    closest = InstagramPhoto.where( :microbe_id => microbe_type ).find_closest( :origin => latlng )
+  def recalculate_scores
+    photos = InstagramPhoto.order("created_time ASC").all
+    known_users = { }
+    photos.each do |photo|
+      score = score_of( [ photo.latitude, photo.longitude ], photo.microbe_id, photo.id )
+      unless known_users.has_key?(photo.instagram_user_id)
+        score = [10, score].max
+        puts "first photo for user!"
+        known_users[photo.instagram_user_id] = score
+      else
+        known_users[photo.instagram_user_id] += score
+      end
+      photo.score = score
+      puts photo.id.to_s + " = " + score.to_s
+      photo.save!
+    end
+    puts "users"
+    known_users.each do | user_id, score |
+      user = InstagramUser.find(user_id)
+      user.score = score
+      user.save!
+      puts user_id.to_s + " = " + score.to_s
+    end
+  end
+
+  def score_of( latlng, microbe_type, own_id=nil )
+    closest = InstagramPhoto.where( :microbe_id => microbe_type)
+    unless own_id.nil?
+      closest = closest.where([ 'instagram_photos.id <> ?', own_id ])
+    end
+    closest = closest.find_closest( :origin => latlng )
     if closest.nil?
       # first bacteria of this type: 10 points
+      puts "first bacteria of this type!"
       10
     else
       neardist = closest.distance_to( latlng )
       # nearest_photos = InstagramPhoto.where( :microbe_id => microbe_type ).find_within(2, :origin => latlng)
       if neardist < 0.007
         # too close - zero points
+        puts "too close!"
         0
       elsif neardist > 100
         # too far - one point
+        puts "too far!"
         1
       else
         # function
@@ -88,23 +120,25 @@ class HomeController < ApplicationController
       known_photo = InstagramPhoto.where(:instagram_photo_id => photo.id).first
       if known_photo.nil?
         # photo is new
+        score = 0
         known_user = InstagramUser.where(:instagram_id => photo.user.id).first
         if known_user.nil?
           # user is new
+          score = [ 10, score_of( [ photo.location.latitude, photo.location.longitude ], microbe.id ) ].max
           known_user = InstagramUser.new(
             :instagram_id => photo.user.id,
             :username => photo.user.username,
             :profile_picture => photo.user.profile_picture,
             :full_name => photo.user.full_name,
-            :score => [ 10, score_of( [ photo.location.latitude, photo.location.longitude ], microbe.id ) ].max
+            :score => score
           )
           known_user.save!
           #puts known_user
         else
           #increment user score
           near = score_of( [ photo.location.latitude, photo.location.longitude ], microbe.id )
-          puts near
-          known_user.score = known_user.score + near.ceil
+          score = near.ceil
+          known_user.score = known_user.score + score
           known_user.save!
         end
         # now that user exists in DB, create the photo
@@ -117,7 +151,8 @@ class HomeController < ApplicationController
           :image_url => photo.images.low_resolution.url,
           :caption => photo.caption.text,
           :instagram_user_id => known_user.id,
-          :microbe_id => microbe.id
+          :microbe_id => microbe.id,
+          :score => score
         )
         gen_photo.save!
         #puts gen_photo
