@@ -45,7 +45,7 @@
       });
       marker.on('mouseover', function(e){
         if($(".leaflet-popup").length === 0){
-          marker.fire('click');
+          marker.fireEvent('click', e);
         }
       });
     };
