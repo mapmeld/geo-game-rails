@@ -1,15 +1,14 @@
+%h1 Leaderboard
+%hr
 
-.row-fluid
-  .hero-unit
-    %h3 Scoring by photos' number and location
-
-.row-fluid
-  - @sorted_users.each do |user|
-    .span4
+.row
+  - @users.each do |user|
+    .span2
       %h3
-        %a{ :href => "/user/#{user.id}" } #{user.username}
+        %a{ :href => "/user/#{user.username}" } #{user.username}
         - if user.score == 1
           %small 1 point
         - else
           %small #{user.score} points
-      %img{ :src => user.profile_picture }
+      %a{ :href => "/user/#{user.username}" }
+        %img.img-polaroid{ :src => user.profile_picture }

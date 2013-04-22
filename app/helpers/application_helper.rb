@@ -59,18 +59,18 @@ module ApplicationHelper
     closest = closest.find_closest( :origin => latlng )
     if closest.nil?
       # first bacteria of this type: 10 points
-      puts "first bacteria of this type!"
+      #puts "first bacteria of this type!"
       10
     else
       neardist = closest.distance_to( latlng )
       # nearest_photos = InstagramPhoto.where( :microbe_id => microbe_type ).find_within(2, :origin => latlng)
       if neardist < 0.007
         # too close - zero points
-        puts "too close!"
-        0
+        #puts "too close!"
+        1
       elsif neardist > 100
         # too far - one point
-        puts "too far!"
+        #puts "too far!"
         1
       else
         # function

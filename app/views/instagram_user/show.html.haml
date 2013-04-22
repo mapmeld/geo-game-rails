@@ -60,21 +60,23 @@
 
     LeafletLib.fitFeatures();
 
-.row-fluid
+%h1 
+  %img.img-polaroid.user-photo{ :src => @user.profile_picture }
+  #{@user.username}
+  %small #{@user.score} points
+%hr
+
+.row
   .span12
-    %h1
-      %span #{@user.username}
+    %h2 #{@recent_photos.length} Photos
+    %ul.thumbnails
+      - @recent_photos.each do |photo|
+        %li.span2.text-center
+          %img.img-polaroid{ :src => photo.image_url }
+          %br
+          %span.badge.btn-success{ :style => "margin-left:8px;" } #{photo.score} points
 
-.row-fluid
-  %ul.span12.thumbnails
-    - @recent_photos.each do |photo|
-      %li.span2.text-center
-        %img.img-polaroid{ :src => photo.image_url }
-        %br
-        %span.badge.btn-success{ :style => "margin-left:8px;" } #{photo.score} points
-
-.row-fluid
+.row
   #map.span12{ :style => "height:400px;" }
 
-%br
 %br

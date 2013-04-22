@@ -19,6 +19,10 @@
    vertical-align: middle;
  }
 
+ h1 .user-photo {
+  max-height: 60px;
+ }
+
  h3 {
    font-size: 18px;
  }
