@@ -29,3 +29,6 @@ h3 { font-size: 18px; }
 .mbbacs{ background-color: #5c036e }
 
 .microbe-photo { max-width: 250px;}
+
+.microbe img { float: left; padding: 5px 5px 5px 0;}
+.microbe h3 { line-height: 20px; margin-bottom: 5px;}

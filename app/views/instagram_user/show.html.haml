@@ -62,7 +62,7 @@
         %li.span2.text-center
           %img.img-polaroid{ :src => photo.image_url }
           %br
-          %span.badge{ :style => "margin-left:8px;" } #{photo.score} points
+          %span.badge #{photo.score} points
           %a{:href => "/microbe/#{photo.tag}"}
             %span{:class => "badge #{photo.tag}"} ##{photo.tag}
 
