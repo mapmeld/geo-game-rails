@@ -209,5 +209,29 @@ var LeafletLib = {
         else {
           alert("Sorry, we could not find your location.");
         }
+    },
+
+    enableMarker: function(marker, photo){
+
+      var popup_content = "<img src='" + photo.image_url + "' width='204' height='204' style='height:204px;width:204px;'/>\
+      <h4>\
+      by <a href='/user/" + photo.username + "'>" + photo.username + "</a>\
+      <br /><span class='badge'>" + photo.score + " points </span>\
+      <a href='/microbes/" + photo.tag + "'>\
+        <span class='badge " + photo.tag + "'>#" + photo.tag + "</span>\
+      </a>\
+      </h4>\
+      Taken on " + (new Date(1000*photo.created_time)).toDateString();
+
+      marker.bindPopup(popup_content);
+      marker.on('click', function(e){
+        openMarker(marker, photo);
+      });
+      marker.on('mouseover', function(e){
+        if($(".leaflet-popup").length == 0){
+          e.latlng = marker.getLatLng();
+          marker.fireEvent('click', e);
+        }
+      });
     }
 }

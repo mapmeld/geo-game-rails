@@ -38,18 +38,6 @@
       });
     };
 
-    var enableMarker = function(marker, photo){
-      marker.bindPopup("<img src='" + photo.image_url + "' width='204' height='204' style='width:204px;height:204px;'/><br/>" + (new Date(1000*photo.created_time)).toDateString() )
-      marker.on('click', function(e){
-        openMarker(marker, photo);
-      });
-      marker.on('mouseover', function(e){
-        if($(".leaflet-popup").length === 0){
-          marker.fireEvent('click', e);
-        }
-      });
-    };
-
     var photos = #{@mapped_photos};
 
     for(var photo in photos){
@@ -63,23 +51,26 @@
           opacity: 0.7
         }
       );
-      enableMarker(m, photos[photo]);
+
+      LeafletLib.enableMarker(m, photos[photo]);
       LeafletLib.addMarker( m );
     }
 
     LeafletLib.fitFeatures();
 
-.row-fluid
-  .span12
-    %h1
-      %span #{@microbe.name}
-      %small{ :class => "badge #{@microbe.tag}" } ##{@microbe.tag}
-    %br
+%h1 
+  #{@microbe.name}
+  %small{ :class => "badge #{@microbe.tag}" } ##{@microbe.tag}
+%hr
 
-    #map{ :style => "height:400px;" }
-
-    %h3 About
+.row
+  .span4
+    %img{:src => "/assets/#{@microbe.tag}.png", :title => @microbe.tag, :alt => @microbe.tag}
+    %h3 Description
     %p #{@microbe.description}
+
+  .span8
+    #map{ :style => "height:400px;" }
 
 %br
 %br
