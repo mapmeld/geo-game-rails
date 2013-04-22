@@ -8,9 +8,20 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
  *= require bootstrap_and_overrides
+ *= require_self
  */
+
+ // tweaking design of badges for microbe pages
+ h1 .badge{
+   padding: 8px 7px;
+   font-size: 21px;
+   vertical-align: middle;
+ }
+
+ h3 {
+   font-size: 18px;
+ }
 
 small.mbgeo{ background-color: #ff7518 }
 small.mbrhizo{ background-color: #2f9618 }

@@ -46,7 +46,12 @@
     };
 
     var enableMarker = function(marker, photo){
-      marker.bindPopup("<img src='" + photo.image_url + "' width='204' height='204' style='height:204px;width:204px;'/><br/>" + (new Date(1000*photo.created_time)).toDateString() )
+
+      var popup_content = "<img src='" + photo.image_url + "' width='204' height='204' style='height:204px;width:204px;'/>\
+      <br />Photo by " + photo.username + "\
+      <br />Taken on " + (new Date(1000*photo.created_time)).toDateString();
+
+      marker.bindPopup(popup_content);
       marker.on('click', function(e){
         openMarker(marker, photo);
       });
@@ -79,9 +84,10 @@
 .row-fluid
   .span4
     - @microbes.each do |microbe|
-      %h4
+      %h3
         %a.latin{ :href => "/microbe/#{microbe.id}" } #{microbe.name}
-        %br
         %small{ :class => "badge #{microbe.tag} microbe#{microbe.id}" } ##{microbe.tag}
+      %p
+        = microbe.description
   .span8
     #map
