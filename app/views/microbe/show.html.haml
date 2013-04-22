@@ -2,6 +2,13 @@
 
   :javascript
 
+    $(window).resize(function () {
+      var h = $(window).height(),
+        offsetTop = 90; // Calculate the top offset
+
+      $('#map').css('height', (h - offsetTop));
+    }).resize();
+
     LeafletLib.initialize(
       $("#map")[0],
       { },
@@ -58,19 +65,16 @@
 
     LeafletLib.fitFeatures();
 
-%h1 
-  #{@microbe.name}
-  %small{ :class => "badge #{@microbe.tag}" } ##{@microbe.tag}
-%hr
-
-.row
+.row-fluid
   .span4
-    %img{:src => "/assets/#{@microbe.tag}.png", :title => @microbe.tag, :alt => @microbe.tag}
-    %h3 Description
-    %p #{@microbe.description}
+    %img.microbe-photo{:src => "/assets/#{@microbe.tag}.png", :title => @microbe.tag, :alt => @microbe.tag}
+    %h2 
+      #{@microbe.name}
+      %small{ :class => "badge #{@microbe.tag}" } ##{@microbe.tag}
+    %p #{raw @microbe.description}
 
   .span8
-    #map{ :style => "height:400px;" }
+    #map
 
 %br
 %br

@@ -1,3 +1,30 @@
+.row-fluid
+  .span4
+    %h2 Welcome to Micro-Boundaries!
+
+    %p This is a game designed to help you experience two things: the needs of beneficial bacteria, and new places and perspectives in your urban environment. 
+
+    %p There are 5 bacteria to choose from. Each of them provides a unique and beneficial service to us and our world. 
+
+    - @microbes.each do |microbe|
+      %a.microbe{ :href => "/microbe/#{microbe.tag}", :rel => "popover", :title => microbe.name, :"data-content" => microbe.description, :"data-trigger" => 'hover', :"data-html" => 'true' }
+        %h3
+          %img{:src => "/assets/#{microbe.tag}-sm.png", :title => microbe.tag, :alt => microbe.tag}
+          = microbe.name
+          %small{ :class => "badge #{microbe.tag} microbe#{microbe.id}" } ##{microbe.tag}
+
+    / %hr
+    / %h2 
+    /   Top players
+    /   %small 
+    /     %a{:href => '/leaderboard'} more &raquo;
+    / - @users.each do |user|
+    /   %h4
+    /     %a{ :href => "/user/#{user.username}" }=user.username
+    /     %small #{user.score} points
+  .span8
+    #map
+
 - content_for :javascripts do
 
   :javascript
@@ -62,31 +89,3 @@
     }
 
     LeafletLib.fitFeatures();
-
-.row-fluid
-  .span4
-    %h2 Welcome to Micro-Boundaries!
-
-    %p This is a game designed to help you experience two things: the needs of beneficial bacteria, and new places and perspectives in your urban environment. 
-
-    %p There are 5 bacteria to choose from. Each of them provides a unique and beneficial service to us and our world. 
-
-    - @microbes.each do |microbe|
-      %h3
-        %a{ :href => "/microbe/#{microbe.tag}" }
-          %img{:src => "/assets/#{microbe.tag}-sm.png", :title => microbe.tag, :alt => microbe.tag}
-          =microbe.name
-        %a{ :href => "/microbe/#{microbe.tag}" }
-          %small{ :class => "badge #{microbe.tag} microbe#{microbe.id}" } ##{microbe.tag}
-
-    / %hr
-    / %h2 
-    /   Top players
-    /   %small 
-    /     %a{:href => '/leaderboard'} more &raquo;
-    / - @users.each do |user|
-    /   %h4
-    /     %a{ :href => "/user/#{user.username}" }=user.username
-    /     %small #{user.score} points
-  .span8
-    #map
