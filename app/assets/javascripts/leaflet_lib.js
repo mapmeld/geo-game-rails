@@ -224,7 +224,7 @@ var LeafletLib = {
         <span class='badge " + photo.tag + "'>#" + photo.tag + "</span>\
       </a>\
       </h4>\
-      Taken on " + (new Date(1000*photo.created_time)).toDateString();
+      <p>" + photo.caption + "</p>";
 
       marker.bindPopup(popup_content);
       marker.on('click', function(e){

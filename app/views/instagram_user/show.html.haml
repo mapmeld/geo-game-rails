@@ -62,7 +62,7 @@
   .span12
     %h2 #{@recent_photos.length} photos
     %ul.thumbnails
-      - @recent_photos.each do |photo|
+      - @recent_photos.each_with_index do |photo, index|
         %li.span2.text-center
           %img.img-polaroid{ :src => photo.image_url }
           %br
@@ -74,6 +74,10 @@
           
           %a{:href => "/microbe/#{photo.tag}"}
             %span{:class => "badge #{photo.tag}"} ##{photo.tag}
+          %p
+            = photo.caption
+        - if (index + 1) % 6 == 0
+          .clearfix 
 
 .row
   .span12
