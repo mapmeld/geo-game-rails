@@ -213,10 +213,13 @@ var LeafletLib = {
 
     enableMarker: function(marker, photo){
 
+      var points = "points";
+      if (photo.score == 1) points = "point"
+
       var popup_content = "<img src='" + photo.image_url + "' width='204' height='204' style='height:204px;width:204px;'/>\
       <h4>\
       by <a href='/user/" + photo.username + "'>" + photo.username + "</a>\
-      <br /><span class='badge'>" + photo.score + " points </span>\
+      <br /><span class='badge'>" + photo.score + " " + points + " </span>\
       <a href='/microbes/" + photo.tag + "'>\
         <span class='badge " + photo.tag + "'>#" + photo.tag + "</span>\
       </a>\

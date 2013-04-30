@@ -13,6 +13,10 @@
         - if user.score == 1
           %small 1 point
         - else
-          %small #{user.score} points
+          %small 
+            - if user.score == 1
+              #{user.score} point
+            - else
+              #{user.score} points
       %a{ :href => "/user/#{user.username}" }
         %img.img-polaroid{ :src => user.profile_picture }

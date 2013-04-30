@@ -51,7 +51,11 @@
 %h1 
   %img.img-polaroid.user-photo{ :src => @user.profile_picture }
   #{@user.username}
-  %small #{@user.score} points
+  %small 
+    - if @user.score == 1
+      #{@user.score} point
+    - else
+      #{@user.score} points
 %hr
 
 .row
@@ -62,7 +66,12 @@
         %li.span2.text-center
           %img.img-polaroid{ :src => photo.image_url }
           %br
-          %span.badge #{photo.score} points
+          %span.badge 
+            - if photo.score == 1
+              #{photo.score} point
+            - else
+              #{photo.score} points
+          
           %a{:href => "/microbe/#{photo.tag}"}
             %span{:class => "badge #{photo.tag}"} ##{photo.tag}
 
