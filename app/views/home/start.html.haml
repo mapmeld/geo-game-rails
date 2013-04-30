@@ -4,12 +4,33 @@
     %h1 Get started
     %hr
 
-    %p Welcome to Micro-Boundaries!
+    %ol
+      %li 
+        %h3 Choose a bacteria:
+        %ul.inline.unstyled
+          - @microbes.each do |microbe|
+            %li
+              %a.microbe{ :href => "/microbe/#{microbe.tag}"}
+                %img{:src => "/assets/#{microbe.tag}-sm.png", :title => microbe.tag, :alt => microbe.tag}
+                %br
+                .small{ :class => "badge #{microbe.tag} microbe#{microbe.id}" } ##{microbe.tag}
+        .clearfix
 
-    %p This is a game designed to help you experience two things: the needs of beneficial bacteria, and new places and perspectives in your urban environment. 
-
-    %p There are 5 bacteria to choose from. Each of them provides a unique and beneficial service to us and our world. Some of them live in the earth’s crust. Some of them live in deep water, in harsh conditions, amongst the roots of plants. Their work is ever-present and invisible.
-
-    %p Micro-Boundaries asks: where would this bacteria live in your city? What kind of places can you imagine that it might like? How does it become present in your world?
-
-    %p Take a photo of a place that fits the criteria for that bacteria with Instagram. Add the hashtag. Colonize your city with microbes. Discover new places in your city, gain new perspective, help spread the word about the good work of these 'bugs'. 
+      %li 
+        %h3 Find a place for the bacteria in your city. 
+      %li 
+        %h3 Take a photo of that place with Instagram and add your bacteria’s #hashtag 
+        %p Make sure to <a href='http://help.instagram.com/375744095836923/'>add your photo to the map</a>!
+        %p Here are some examples: 
+        %ul.thumbnails
+          - @recent_photos.each do |photo|
+            %li.span2.text-center
+              %img.img-polaroid{ :src => photo.image_url }
+              %br
+              %a{:href => "/microbe/#{photo.tag}"}
+                %span{:class => "badge #{photo.tag}"} ##{photo.tag}
+      %li 
+        %h3 Share the most photos in the best places to get the most points and colonize your city!
+        %p 
+          Scoring is based on distance from other similar bacteria and number of Instagram likes.
+          %a{:href => "/scoring"} Check out how scoring works.
