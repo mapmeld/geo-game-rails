@@ -50,7 +50,8 @@
 
 %h1 
   %img.img-polaroid.user-photo{ :src => @user.profile_picture }
-  #{@user.username}
+  %a{:href => "http://instagram.com/#{@user.username}", :target => "_blank"}
+    #{@user.username}
   %small 
     - if @user.score == 1
       #{@user.score} point

@@ -37,6 +37,7 @@ module ApplicationHelper
         known_users[photo.instagram_user_id] = score
       else
         known_users[photo.instagram_user_id] += score
+        puts score
       end
       photo.score = score
       puts photo.id.to_s + " = " + score.to_s
@@ -74,7 +75,7 @@ module ApplicationHelper
         1
       else
         # function
-        10 / ( 3 * neardist + 0.333 )
+        (10 / ( 3 * neardist + 0.333 )).ceil
       end
     end
   end
