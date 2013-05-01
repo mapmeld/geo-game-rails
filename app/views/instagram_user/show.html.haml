@@ -41,7 +41,15 @@
     var photos = #{@mapped_photos};
     for(var photo in photos){
       // lat/lng location exists. map it
-      var m = new L.CircleMarker( new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ), {color: '#f50f43'} );
+      var m = new L.CircleMarker(
+        new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ),
+        {
+          color: $('.' + photos[photo].tag).css("background-color"),
+          weight: 3,
+          fillOpacity: 0.7,
+          opacity: 0.7
+        }
+      );
       LeafletLib.enableMarker(m, photos[photo]);
       LeafletLib.addMarker( m );
     }
