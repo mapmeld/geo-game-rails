@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130419161831) do
+ActiveRecord::Schema.define(:version => 20130501172500) do
 
   create_table "instagram_photos", :force => true do |t|
     t.string   "created_time"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20130419161831) do
     t.datetime "updated_at",         :null => false
     t.integer  "microbe_id"
     t.integer  "score"
+    t.integer  "likes"
   end
 
   add_index "instagram_photos", ["instagram_user_id"], :name => "index_instagram_photos_on_instagram_user_id"

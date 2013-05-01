@@ -65,7 +65,8 @@
     %ul.thumbnails
       - @recent_photos.each_with_index do |photo, index|
         %li.span2.text-center
-          %img.img-polaroid{ :src => photo.image_url }
+          %a{ :href => "http://instagram.com/p/#{photo.instagram_photo_id}", :target => "_blank" }
+            %img.img-polaroid{ :src => photo.image_url }
           %br
           %span.badge 
             - if photo.score == 1

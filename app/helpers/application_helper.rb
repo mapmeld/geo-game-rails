@@ -31,13 +31,17 @@ module ApplicationHelper
     known_users = { }
     photos.each do |photo|
       score = score_of( [ photo.latitude, photo.longitude ], photo.microbe_id, photo.id )
+      unless photo.likes.nil?
+        puts "adding likes: " + photo.likes.to_s
+        score = score + photo.likes
+      end
       unless known_users.has_key?(photo.instagram_user_id)
         score = [10, score].max
-        puts "first photo for user!"
+        # puts "first photo for user!"
         known_users[photo.instagram_user_id] = score
       else
         known_users[photo.instagram_user_id] += score
-        puts score
+        # puts score
       end
       photo.score = score
       puts photo.id.to_s + " = " + score.to_s
@@ -90,10 +94,8 @@ module ApplicationHelper
     end
 
     # store photos until you reach an already-known photo
-    finished = false
     photos.each do |photo|
-      finished = store_instagram_photo(photo, microbe)
-      break if finished
+      store_instagram_photo(photo, microbe)
 
       if earliest_tag_id.nil?
         earliest_tag_id = photo.id
@@ -105,14 +107,16 @@ module ApplicationHelper
     # if these 20 images did not match any in the DB, go to the next page
     # unless we are on the tenth page; that's time to stop
 
-    if finished == false and page < 10 and photos.length >= 15
+    if page < 10 and photos.length >= 15
       fetch_from_instagram( microbe, earliest_tag_id, page + 1 )
     end
   end
 
   def self.store_instagram_photo(photo, microbe)
     unless photo.location.nil?
-      known_photo = InstagramPhoto.where(:instagram_photo_id => photo.id).first
+      linkable_id = photo.link.split("/")[4]
+      # puts linkable_id
+      known_photo = InstagramPhoto.where(:instagram_photo_id => linkable_id).first
       if known_photo.nil?
         # photo is new
         known_user = InstagramUser.where(:instagram_id => photo.user.id).first
@@ -130,20 +134,26 @@ module ApplicationHelper
         # now that user exists in DB, create the photo
         photo.caption = photo.caption or { :text => "" }
         gen_photo = InstagramPhoto.new(
-          :instagram_photo_id => photo.id,
+          :instagram_photo_id => linkable_id,
           :created_time => photo.created_time,
           :latitude => photo.location.latitude,
           :longitude => photo.location.longitude,
           :image_url => photo.images.low_resolution.url,
           :caption => photo.caption.text,
           :instagram_user_id => known_user.id,
-          :microbe_id => microbe.id
+          :microbe_id => microbe.id,
+          :likes => photo.likes[ :count ]
         )
         gen_photo.save!
         #puts gen_photo
         false
       else
-        # photo has been added before
+        # photo has been added before - check for new likes
+        if known_photo.likes != photo.likes[ :count ]
+          known_photo.likes = photo.likes[ :count ]
+          puts "adjusted to " + photo.likes[ :count ].to_s
+          known_photo.save!
+        end
         true
       end
     else
