@@ -124,6 +124,10 @@ Initialize the database
 
     heroku run rake db:setup
 
+Add your Instagram API key
+
+    heroku config:set instagram_token=your_instagram_api_key
+
 Start looking for photos and view the homepage (the first load will take several seconds)
 
     heroku open --app APP_NAME
