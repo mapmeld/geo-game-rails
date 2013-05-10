@@ -12,9 +12,9 @@ GeoGameRails is a generic fork of <a href="http://microboundaries.com/about">Mic
 
 * A <strong>Category</strong> is a special item which users are trying to collect or photograph. You should specify a memorable #hashtag for each Category.
 
-* An <strong>Instagram User</strong> is any Instagram user who adds your game's #hashtags to public, geolocated photos.
+* An <strong>Instagram User</strong> is any Instagram user who adds your game's #hashtags to public, geolocated photos. They do not need to register beforehand.
 
-* An <strong>Instagram Photo</strong> is any public, geotagged photo with your game's #hashtags. They are scored by the moment when they are scraped 
+* An <strong>Instagram Photo</strong> is any public, geotagged Instagram photo with your game's #hashtag in the caption. They are scored at the moment when they are added to the game, based on the photo's location and Instagram likes. 
 
 ## Customization
 
@@ -52,7 +52,9 @@ This function must return a number giving the score of this photo. The number ca
 
 ### Value of Likes in Scoring
 
-Likes are added to the score of recent photos in /app/helpers/application_helper.rb.
+Instagram users often use a heart button to Like each other's photos.
+
+Likes are added to the location-based score of recent photos in /app/helpers/application_helper.rb.
 
 If you don't like this, remove or comment out these two blocks of code:
 
