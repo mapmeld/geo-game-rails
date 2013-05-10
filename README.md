@@ -2,6 +2,8 @@
 
 Make your own location-based game with Ruby on Rails, Postgres, and Heroku. Keeps a list of players, their Instagram photos, and their scores.
 
+<img src="http://i.imgur.com/l7VL1Fh.png"/>
+
 ## Origin
 
 GeoGameRails is a generic fork of <a href="http://microboundaries.com/about">MicroBoundaries</a>.
@@ -21,6 +23,8 @@ GeoGameRails is a generic fork of <a href="http://microboundaries.com/about">Mic
 In /db/seeds.rb, replace categories <strong>test1</strong> and <strong>test2</strong> with your own categories. Use the same format:
 
     { name: 'Test One', tag: 'test1', description: "<p>Write a description here.</p><ul><li>use text</li><li>use HTML</li></ul>" },
+
+In /app/assets/images/, put two images with each category's tag: TAGNAME-sm.png and TAGNAME.png
 
 The name, hashtag, and description of this category appear several times on the site.
 
