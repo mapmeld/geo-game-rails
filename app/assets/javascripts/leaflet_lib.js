@@ -13,10 +13,8 @@ var LeafletLib = {
 
         LeafletLib.map = L.map(element).setView(new L.LatLng( centroid[0], centroid[1] ), zoom);
 
-        LeafletLib.tiles = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-            key: '88c48b9eab824447beca8aca7bb6e167',
-            styleId: 92633
-        }).addTo(LeafletLib.map);
+        LeafletLib.tiles = L.tileLayer('http://{s}.tiles.mapbox.com/v3/mapmeld.map-uyl6ixjz/{z}/{x}/{y}.png')
+          .addTo(LeafletLib.map);
 
         LeafletLib.map.attributionControl.setPrefix('');
         L.Icon.Default.imagePath = "/assets/images/";
