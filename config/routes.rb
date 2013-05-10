@@ -4,7 +4,7 @@ GeoGameRails::Application.routes.draw do
   match "/refresh_photos" => "home#refresh_photos"
 
   # dynamic pages
-  match "/categories/:tag" => "category#show"
+  match "/category/:tag" => "category#show"
   match "/leaderboard" => "instagram_user#index"
   match "/user/:username" => "instagram_user#show"
 
