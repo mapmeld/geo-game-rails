@@ -22,7 +22,7 @@ module ApplicationHelper
       fetch_from_instagram(category)
     end
 
-    recalculate_scores
+    # recalculate_scores
     finished_instagram_load
   end
 
