@@ -15,7 +15,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: micro-boundaries_development
+  database: geogamerails_development
   pool: 5
   username:
   password:
@@ -41,7 +41,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: micro-boundaries_test
+  database: geogamerails_test
   pool: 5
   username:
   password:
@@ -49,7 +49,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: micro-boundaries_production
+  database: geogamerails_production
   pool: 5
   username:
   password:

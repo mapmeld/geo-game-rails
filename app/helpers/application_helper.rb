@@ -11,15 +11,15 @@ module ApplicationHelper
     @@next_load_instagram = Time.now + 10.minutes
   end
 
-  def self.microbes
-    @@microbes = Microbe.all
+  def self.categories
+    @@categories = Category.all
   end
 
   def self.fetch_all_photos
-    microbes = ApplicationHelper.microbes
+    categories = ApplicationHelper.categories
 
-    microbes.each do |microbe|
-      fetch_from_instagram(microbe)
+    categories.each do |category|
+      fetch_from_instagram(category)
     end
 
     recalculate_scores
@@ -30,7 +30,7 @@ module ApplicationHelper
     photos = InstagramPhoto.order("created_time ASC").all
     known_users = { }
     photos.each do |photo|
-      score = score_of( [ photo.latitude, photo.longitude ], photo.microbe_id, photo.id )
+      score = score_of( [ photo.latitude, photo.longitude ], photo.category_id, photo.id )
       unless photo.likes.nil?
         puts "adding likes: " + photo.likes.to_s
         score = score + photo.likes
@@ -56,46 +56,44 @@ module ApplicationHelper
     end
   end
 
-  def self.score_of( latlng, microbe_type, own_id=nil )
-    closest = InstagramPhoto.where( :microbe_id => microbe_type)
+  # customize score_of to change the scoring of the game
+  def self.score_of( latlng, category_type, own_id=nil )
+    closest = InstagramPhoto.where( :category_id => category_type)
     unless own_id.nil?
       closest = closest.where([ 'instagram_photos.id <> ?', own_id ])
     end
     closest = closest.find_closest( :origin => latlng )
     if closest.nil?
-      # first bacteria of this type: 10 points
-      #puts "first bacteria of this type!"
+      # first in this category: 10 points
       10
     else
       neardist = closest.distance_to( latlng )
-      # nearest_photos = InstagramPhoto.where( :microbe_id => microbe_type ).find_within(2, :origin => latlng)
       if neardist < 0.007
-        # too close - zero points
-        #puts "too close!"
+        # too close: 1 point
         1
       elsif neardist > 100
-        # too far - one point
-        #puts "too far!"
+        # too far: one point
         1
       else
-        # function
+        # not too far, not too close... use a custom distance function
         (10 / ( 3 * neardist + 0.333 )).ceil
       end
     end
   end
 
-  def self.fetch_from_instagram( microbe, earliest_tag_id=nil, page=0 )
+  def self.fetch_from_instagram( category, earliest_tag_id=nil, page=0 )
     earliest_tag_id = nil
 
     if page.nil?
-      photos = Instagram.tag_recent_media(microbe.tag)
+      photos = Instagram.tag_recent_media(category.tag)
     else
-      photos = Instagram.tag_recent_media(microbe.tag, { :max_tag_id => page })
+      photos = Instagram.tag_recent_media(category.tag, { :max_tag_id => page })
     end
 
     # store photos until you reach an already-known photo
     photos.each do |photo|
-      store_instagram_photo(photo, microbe)
+      finished = store_instagram_photo(photo, category)
+      break if finished
 
       if earliest_tag_id.nil?
         earliest_tag_id = photo.id
@@ -104,15 +102,15 @@ module ApplicationHelper
       end
     end
 
-    # if these 20 images did not match any in the DB, go to the next page
-    # unless we are on the tenth page; that's time to stop
+    # if these images did not match any in the DB, go to the next page
+    # unless we are on the tenth page; that's too many photos to add at once
 
-    if page < 10 and photos.length >= 15
-      fetch_from_instagram( microbe, earliest_tag_id, page + 1 )
+    if finished == false and page < 10 and photos.length >= 15
+      fetch_from_instagram( category, earliest_tag_id, page + 1 )
     end
   end
 
-  def self.store_instagram_photo(photo, microbe)
+  def self.store_instagram_photo(photo, category)
     unless photo.location.nil?
       linkable_id = photo.link.split("/")[4]
       # puts linkable_id
@@ -141,7 +139,7 @@ module ApplicationHelper
           :image_url => photo.images.low_resolution.url,
           :caption => photo.caption.text,
           :instagram_user_id => known_user.id,
-          :microbe_id => microbe.id,
+          :category_id => category.id,
           :likes => photo.likes[ :count ]
         )
         gen_photo.save!

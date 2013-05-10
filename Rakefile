@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-MicroBoundaries::Application.load_tasks
+GeoGameRails::Application.load_tasks

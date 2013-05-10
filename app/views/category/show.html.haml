@@ -52,7 +52,7 @@
       var m = new L.CircleMarker(
         new L.LatLng( photos[photo].latitude * 1.0, photos[photo].longitude * 1.0 ),
         {
-          color: $(".#{@microbe.tag}").css("background-color"),
+          color: $(".#{@category.tag}").css("background-color"),
           weight: 3,
           fillOpacity: 0.7,
           opacity: 0.7
@@ -68,20 +68,20 @@
 .row-fluid
   .span5
     %h2 
-      #{@microbe.name}
-      %small{ :class => "badge #{@microbe.tag}" } ##{@microbe.tag}
+      #{@category.name}
+      %small{ :class => "badge #{@category.tag}" } ##{@category.tag}
 
     .row-fluid
       .span6
-        %p #{raw @microbe.description}
+        %p #{raw @category.description}
       .span6
-        %img.microbe-photo{:src => "/assets/#{@microbe.tag}.png", :title => @microbe.tag, :alt => @microbe.tag}
+        %img.category-photo{:src => "/assets/#{@category.tag}.png", :title => @category.tag, :alt => @category.tag}
 
     .row-fluid
       .span12
         %h3 Recent photos
         %ul.thumbnails
-          - @microbe_photos[0..2].each_with_index do |photo, index|
+          - @category_photos[0..2].each_with_index do |photo, index|
             %li.span4.text-center
               %img.img-polaroid{ :src => photo.image_url }
               %br
@@ -91,7 +91,7 @@
                 - else
                   #{photo.score} points
               
-              %a{:href => "/microbe/#{photo.tag}"}
+              %a{:href => "/category/#{photo.tag}"}
                 %span{:class => "badge #{photo.tag}"} ##{photo.tag}
               %p
                 = photo.caption

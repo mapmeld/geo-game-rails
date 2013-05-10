@@ -220,7 +220,7 @@ var LeafletLib = {
       <h4>\
       by <a href='/user/" + photo.username + "'>" + photo.username + "</a>\
       <br /><span class='badge'>" + photo.score + " " + points + " </span>\
-      <a href='/microbes/" + photo.tag + "'>\
+      <a href='/categories/" + photo.tag + "'>\
         <span class='badge " + photo.tag + "'>#" + photo.tag + "</span>\
       </a>\
       </h4>\

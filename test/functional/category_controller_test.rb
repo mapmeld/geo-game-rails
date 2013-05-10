@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MicrobeControllerTest < ActionController::TestCase
+class CategoryControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end

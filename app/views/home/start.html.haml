@@ -6,20 +6,18 @@
 
     %ol
       %li 
-        %h3 Choose a bacteria:
+        %h3 Choose a category:
         %ul.inline.unstyled
-          - @microbes.each do |microbe|
+          - @categories.each do |category|
             %li
-              %a.microbe{ :href => "/microbe/#{microbe.tag}"}
-                %img{:src => "/assets/#{microbe.tag}-sm.png", :title => microbe.tag, :alt => microbe.tag}
+              %a.category{ :href => "/category/#{category.tag}"}
+                %img{:src => "/assets/#{category.tag}-sm.png", :title => category.tag, :alt => category.tag}
                 %br
-                .small{ :class => "badge #{microbe.tag} microbe#{microbe.id}" } ##{microbe.tag}
+                .small{ :class => "badge #{category.tag}" } ##{category.tag}
         .clearfix
 
       %li 
-        %h3 Find a place for the bacteria in your city. 
-      %li 
-        %h3 Take a photo of that place with Instagram and add your bacteria’s #hashtag 
+        %h3 Take a photo with Instagram and add the appropriate #hashtag 
         %p Make sure to <a href='http://help.instagram.com/375744095836923/'>add your photo to the map</a>!
         %p Here are some examples: 
         %ul.thumbnails
@@ -27,12 +25,11 @@
             %li.span2.text-center
               %img.img-polaroid{ :src => photo.image_url }
               %br
-              %a{:href => "/microbe/#{photo.tag}"}
+              %a{:href => "/category/#{photo.tag}"}
                 %span{:class => "badge #{photo.tag}"} ##{photo.tag}
-      %li 
-        %h3 Share the most photos in the best places to get the most points and colonize your city!
+      %li
+        %h3 Explain scoring
         %p 
-          Scoring is based on distance from other similar bacteria and number of Instagram likes.
           %a{:href => "/scoring"} Check out how scoring works.
 
     %br

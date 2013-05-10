@@ -1,10 +1,10 @@
-MicroBoundaries::Application.routes.draw do
+GeoGameRails::Application.routes.draw do
 
   # utility pages
   match "/refresh_photos" => "home#refresh_photos"
 
   # dynamic pages
-  match "/microbe/:tag" => "microbe#show"
+  match "/categories/:tag" => "category#show"
   match "/leaderboard" => "instagram_user#index"
   match "/user/:username" => "instagram_user#show"
 

@@ -9,11 +9,11 @@ class HomeController < ApplicationController
     #   refresh_photos
     # end
 
-    @microbes = ApplicationHelper.microbes
+    @categories = ApplicationHelper.categories
     @users = InstagramUser.order("score DESC")[0..2]
-    all_photos = InstagramPhoto.select("instagram_photos.*, instagram_users.username, microbes.tag")
+    all_photos = InstagramPhoto.select("instagram_photos.*, instagram_users.username, categories.tag")
                                .joins("JOIN instagram_users on instagram_users.id = instagram_photos.instagram_user_id")
-                               .joins("JOIN microbes on microbes.id = instagram_photos.microbe_id")
+                               .joins("JOIN categories on categories.id = instagram_photos.category_id")
     @mapped_photos = ActiveSupport::JSON.encode(all_photos)
 
   end
@@ -24,11 +24,11 @@ class HomeController < ApplicationController
   end
 
   def start
-    @microbes = ApplicationHelper.microbes
+    @categories = ApplicationHelper.categories
 
-    @recent_photos = InstagramPhoto.select("instagram_photos.*, instagram_users.username, microbes.tag")
+    @recent_photos = InstagramPhoto.select("instagram_photos.*, instagram_users.username, categories.tag")
                                    .joins("JOIN instagram_users on instagram_users.id = instagram_photos.instagram_user_id")
-                                   .joins("JOIN microbes on microbes.id = instagram_photos.microbe_id")
+                                   .joins("JOIN categories on categories.id = instagram_photos.category_id")
                                    .limit(3).order("created_time DESC").all
   end
 

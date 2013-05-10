@@ -1,18 +1,18 @@
 .row-fluid
   .span4
-    %h2 Colonize your city with beneficial bacteria.
+    %h2 Geo Game Template
 
     %p 
-      Micro-boundaries is a game where you find a home for five beneficial bacteria by interpreting their needs, exploring your city and taking photos with Instagram.
+     Describe the game.
       %a{:href => 'start'} Get started &raquo;
 
-    - @microbes.each do |microbe|
+    - @categories.each do |category|
       .clearfix
-      %a.microbe{ :href => "/microbe/#{microbe.tag}", :rel => "popover", :title => microbe.name, :"data-content" => microbe.description, :"data-trigger" => 'hover', :"data-html" => 'true' }
-        %img{:src => "/assets/#{microbe.tag}-sm.png", :title => microbe.tag, :alt => microbe.tag}
+      %a.category{ :href => "/category/#{category.tag}", :rel => "popover", :title => category.name, :"data-content" => category.description, :"data-trigger" => 'hover', :"data-html" => 'true' }
+        %img{:src => "/assets/#{category.tag}-sm.png", :title => category.tag, :alt => category.tag}
         %h3
-          = microbe.name
-        .small{ :class => "badge #{microbe.tag}" } ##{microbe.tag}
+          = category.name
+        .small{ :class => "badge #{category.tag}" } ##{category.tag}
   .span8
     #map
 

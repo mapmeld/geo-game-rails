@@ -1,2 +1,0 @@
-module MicrobeHelper
-end
