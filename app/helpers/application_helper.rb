@@ -91,9 +91,10 @@ module ApplicationHelper
     end
 
     # store photos until you reach an already-known photo
+    finished = false
     photos.each do |photo|
       finished = store_instagram_photo(photo, category)
-      break if finished
+      # break if finished
 
       if earliest_tag_id.nil?
         earliest_tag_id = photo.id
@@ -148,6 +149,9 @@ module ApplicationHelper
       else
         # photo has been added before - check for new likes
         if known_photo.likes != photo.likes[ :count ]
+          if known_photo.likes != photo.likes[ :count ]
+            known_photo.score = known_photo.score + photo.likes[ :count ] - known_photo.likes
+          end
           known_photo.likes = photo.likes[ :count ]
           puts "adjusted to " + photo.likes[ :count ].to_s
           known_photo.save!

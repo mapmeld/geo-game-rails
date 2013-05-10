@@ -22,11 +22,9 @@ h1 .badge{
 h1 .user-photo { max-height: 60px; }
 h3 { font-size: 18px; }
 
-.mbgeo{ background-color: #713833 }
-.mbrhizo{ background-color: #4ea4c1 }
-.mbmyco{ background-color: #d79067 }
-.mbshewa{ background-color: #af4a4c }
-.mbbacs{ background-color: #5c036e }
+/* color for tags and map circle markers - make one for each tag */
+.test1{ background-color: #713833 }
+.test2{ background-color: #4ea4c1 }
 
 .category-photo { max-width: 250px;}
 
