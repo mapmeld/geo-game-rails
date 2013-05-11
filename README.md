@@ -24,6 +24,10 @@ In /db/seeds.rb, replace categories <strong>test1</strong> and <strong>test2</st
 
     { name: 'Test One', tag: 'test1', description: "<p>Write a description here.</p><ul><li>use text</li><li>use HTML</li></ul>" },
 
+In /app/assets/stylesheets/application.css, add a CSS color for your category
+
+    .test1{ background-color: #4ea4c1; }
+
 In /app/assets/images/, put two images with each category's tag: TAGNAME-sm.png and TAGNAME.png
 
 The name, hashtag, and description of this category appear several times on the site.
@@ -109,6 +113,11 @@ Use an editor to create a .env file and specify an Instagram API token. At this 
 
     nano .env
     instagram_token = "your_instagram_api_key"
+
+Set up a server on localhost:5000 with foreman
+
+    gem install foreman
+    foreman start
 
 ### Hosting on Heroku
 
